@@ -1,5 +1,8 @@
 const initState = {
-	assignments: [{ id: '1', title: 'example', content: 'example' }]
+	courses: [],
+	assignments: [],
+	displayedCourse: '',
+	displayedAssignement: ''
 };
 
 const assignmentReducer = (state = initState, action) => {
@@ -10,6 +13,17 @@ const assignmentReducer = (state = initState, action) => {
 		case 'CREATE_COURSE_ERROR':
 			console.log('create course error', action.err);
 			return state;
+		case 'CREATE_ASSIGNMENT':
+			console.log('created assignment', action.course);
+			return state;
+		case 'CREATE_ASSIGNMENT_ERROR':
+			console.log('create assignment error', action.err);
+			return state;
+		case 'SWITCH_DISPLAYED_COURSE':
+			return {
+				...state,
+				displayedCourse: action.displayedCourse
+			};
 		default:
 			return state;
 	}

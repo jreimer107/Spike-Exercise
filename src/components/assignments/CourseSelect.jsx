@@ -2,17 +2,11 @@ import React, { Component } from 'react';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { switchDisplayedCourse } from '../../store/actions/assignmentActions';
 
 class CourseSelect extends Component {
-	state = {
-		displayedCourse: ''
-	};
-
-	handleCourseClick = e => {
-		console.log(e.target);
-		this.setState({
-			displayedCourse: e.target.textContent
-		});
+	handleClick = e => {
+		this.props.switchDisplayedCourse(e.target.textContent);
 	};
 
 	render() {
@@ -28,7 +22,7 @@ class CourseSelect extends Component {
 						aria-haspopup='true'
 						aria-expanded='false'
 					>
-						{this.state.displayedCourse || 'Select Course'}
+						{this.props.displayedCourse || 'Select Course'}
 					</button>
 					<div
 						className='dropdown-menu'
@@ -40,7 +34,7 @@ class CourseSelect extends Component {
 									<button
 										className='dropdown-item'
 										type='button'
-										onClick={this.handleCourseClick}
+										onClick={this.handleClick}
 										key={course.id}
 									>
 										{course.name}
@@ -56,11 +50,22 @@ class CourseSelect extends Component {
 
 const mapStateToProps = state => {
 	return {
+		displayedCourse: state.assignment.displayedCourse,
 		courses: state.firestore.ordered.courses
 	};
 };
 
+const mapDispatchToProps = dispatch => {
+	return {
+		switchDisplayedCourse: displayedCourse =>
+			dispatch(switchDisplayedCourse(displayedCourse))
+	};
+};
+
 export default compose(
-	connect(mapStateToProps),
+	connect(
+		mapStateToProps,
+		mapDispatchToProps
+	),
 	firestoreConnect([{ collection: 'courses' }, { collection: 'assignments' }])
 )(CourseSelect);
