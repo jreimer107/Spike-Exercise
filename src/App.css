@@ -1,33 +1,17 @@
-.App {
-  text-align: center;
+html,
+body {
+	background-image: url(http://getwallpapers.com/wallpaper/full/4/d/c/1206543-paper-wallpaper-1920x1080-for-mac.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 100%;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.login {
+	text-align: center;
+	height: 400px;
+	width: 600px;
+	align-content: center;
+	margin-top: auto;
+	margin-bottom: auto;
+	background-color: rgba(0, 0, 0, 0.5) !important;
 }
