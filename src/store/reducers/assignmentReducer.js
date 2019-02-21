@@ -24,6 +24,16 @@ const assignmentReducer = (state = initState, action) => {
 				...state,
 				displayedCourse: action.displayedCourse
 			};
+		case 'SWITCH_DISPLAYED_ASSIGNMENT':
+			return {
+				...state,
+				displayedAssignment: action.displayedAssignment
+			};
+		case 'CHANGE_RATING':
+			return {
+				...state,
+				rating: action.rating
+			};
 		default:
 			return state;
 	}

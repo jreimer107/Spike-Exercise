@@ -2,19 +2,17 @@ import React, { Component } from 'react';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { switchDisplayedCourse } from '../../store/actions/assignmentActions';
 import { switchDisplayedAssignment } from '../../store/actions/assignmentActions';
+import RateAssignment from './RateAssignment';
 
-class CourseSelect extends Component {
+class AssignmentSelect extends Component {
 	handleClick = e => {
-		this.props.switchDisplayedAssignment('');
-		this.props.switchDisplayedCourse(
-			this.props.courses.find(x => x.id === e.target.id)
+		this.props.switchDisplayedAssignment(
+			this.props.assignments.find(x => x.id === e.target.id)
 		);
 	};
 
 	render() {
-		console.log(this.props);
 		return (
 			<div className='container'>
 				<div className='dropdown'>
@@ -26,23 +24,30 @@ class CourseSelect extends Component {
 						aria-haspopup='true'
 						aria-expanded='false'
 					>
-						{this.props.displayedCourse.name || 'Select Course'}
+						{this.props.displayedAssignment.name ||
+							'Select Assignment'}
 					</button>
 					<div
 						className='dropdown-menu'
 						aria-labelledby='dropdownMenu2'
 					>
-						{this.props.courses &&
-							this.props.courses.map(course => {
+						{this.props.assignments &&
+							this.props.assignments.map(assignment => {
+								if (
+									this.props.displayedCourse.name !==
+									assignment.course
+								) {
+									return null;
+								}
 								return (
 									<button
 										className='dropdown-item'
 										type='button'
 										onClick={this.handleClick}
-										key={course.id}
-										id={course.id}
+										key={assignment.id}
+										id={assignment.id}
 									>
-										{course.name}
+										{assignment.name}
 									</button>
 								);
 							})}
@@ -57,14 +62,12 @@ const mapStateToProps = state => {
 	return {
 		displayedCourse: state.assignment.displayedCourse,
 		displayedAssignment: state.assignment.displayedAssignment,
-		courses: state.firestore.ordered.courses
+		assignments: state.firestore.ordered.assignments
 	};
 };
 
 const mapDispatchToProps = dispatch => {
 	return {
-		switchDisplayedCourse: displayedCourse =>
-			dispatch(switchDisplayedCourse(displayedCourse)),
 		switchDisplayedAssignment: displayedAssignment =>
 			dispatch(switchDisplayedAssignment(displayedAssignment))
 	};
@@ -75,5 +78,5 @@ export default compose(
 		mapStateToProps,
 		mapDispatchToProps
 	),
-	firestoreConnect([{ collection: 'courses' }])
-)(CourseSelect);
+	firestoreConnect([{ collection: 'assignments' }])
+)(AssignmentSelect);

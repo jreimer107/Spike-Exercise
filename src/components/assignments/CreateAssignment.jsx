@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createCourse } from '../../store/actions/assignmentActions';
+import { createAssignment } from '../../store/actions/assignmentActions';
+import RateAssignment from './RateAssignment';
 
-class CreateCourse extends Component {
-	state = {
-		name: '',
-		description: ''
-	};
-
+class CreateAssignment extends Component {
 	handleChange = e => {
 		this.setState({
 			[e.target.id]: e.target.value
@@ -16,18 +12,21 @@ class CreateCourse extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault();
-		this.props.createCourse(this.state);
-		document.getElementById('create-course-form').reset();
+		this.props.createAssignment({
+			...this.state,
+			course: this.props.displayedCourse
+		});
+		document.getElementById('create-assignment-form').reset();
 	};
 
 	render() {
 		return (
 			<div className='container'>
-				<h5>Create New Course</h5>
+				<h5>Create New Assignment</h5>
 				<form
 					onSubmit={this.handleSubmit}
 					className='white'
-					id='create-course-form'
+					id='create-assignment-form'
 				>
 					<div className='input-field'>
 						<label htmlFor='text'>Name</label>
@@ -48,6 +47,9 @@ class CreateCourse extends Component {
 						<label htmlFor='textarea1'>Description</label>
 					</div>
 					<div className='input-field'>
+						<RateAssignment />
+					</div>
+					<div className='input-field'>
 						<button className='btn btn-primary lighten-1 z-depth-0'>
 							Create
 						</button>
@@ -58,13 +60,19 @@ class CreateCourse extends Component {
 	}
 }
 
+const mapStateToProps = state => {
+	return {
+		displayedCourse: state.assignment.displayedCourse
+	};
+};
+
 const mapDispatchToProps = dispatch => {
 	return {
-		createCourse: course => dispatch(createCourse(course))
+		createAssignment: assignment => dispatch(createAssignment(assignment))
 	};
 };
 
 export default connect(
-	null,
+	mapStateToProps,
 	mapDispatchToProps
-)(CreateCourse);
+)(CreateAssignment);

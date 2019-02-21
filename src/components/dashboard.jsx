@@ -6,6 +6,7 @@ import CreateCourse from './assignments/CreateCourse';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import Selection from './assignments/Selection';
+import CreateAssignment from './assignments/CreateAssignment';
 
 class Dashboard extends Component {
 	render() {
@@ -14,11 +15,11 @@ class Dashboard extends Component {
 			<div className='dashboard container'>
 				<div className='row'>
 					<div className='col s12 m6'>
-						<h1>Dashboard</h1>
-						<AssignmentList assignments={assignments} />
-						<RateAssignment />
-						<CreateCourse />
 						<Selection />
+						<CreateCourse />
+						{this.props.displayedCourse ? (
+							<CreateAssignment />
+						) : null}
 					</div>
 				</div>
 			</div>
@@ -30,7 +31,9 @@ const mapStateToProps = state => {
 	return {
 		courses: state.firestore.ordered.courses,
 		assignments: state.firestore.ordered.assignments,
-		auth: state.firebase.auth
+		auth: state.firebase.auth,
+		displayedCourse: state.assignment.displayedCourse,
+		displayedAssignment: state.assignment.displayedAssignment
 	};
 };
 

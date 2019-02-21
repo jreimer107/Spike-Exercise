@@ -1,99 +1,95 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { changeRating } from '../../store/actions/assignmentActions';
 
 class RateAssignment extends Component {
-	state = {
-		grade: 'Choose Grade',
-		assignment: ''
-	};
-
 	handleClick = e => {
-		this.setState({
-			grade: e.target.id
-		});
-	};
-
-	handleSubmit = e => {
-		e.preventDefault();
-		// send new thing to server
+		this.props.changeRating(e.target.id);
 	};
 
 	render() {
 		return (
 			<div className='container'>
-				<form onSubmit={this.handleSubmit} className='white'>
-					<h5 className='grey-text text-darken-3'>Rate Assignment</h5>
-					<div className='btn-group'>
-						<div className='input-field m-2'>
-							<label htmlFor='grade'>Grade</label>
-							<div className='dropdown'>
+				<div className='btn-group'>
+					<div className='input-field m-2'>
+						<label htmlFor='grade'>Grade</label>
+						<div className='dropdown'>
+							<button
+								className='btn btn-info dropdown-toggle'
+								type='button'
+								id='dropdownMenu2'
+								data-toggle='dropdown'
+								aria-haspopup='true'
+								aria-expanded='false'
+							>
+								{this.props.rating || 'Select Grade'}
+							</button>
+							<div
+								className='dropdown-menu'
+								aria-labelledby='dropdownMenu2'
+							>
 								<button
-									className='btn btn-info dropdown-toggle'
+									className='dropdown-item'
 									type='button'
-									id='dropdownMenu2'
-									data-toggle='dropdown'
-									aria-haspopup='true'
-									aria-expanded='false'
+									onClick={this.handleClick}
+									id='A'
 								>
-									{this.state.grade}
+									A
 								</button>
-								<div
-									className='dropdown-menu'
-									aria-labelledby='dropdownMenu2'
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
+									id='B'
 								>
-									<button
-										className='dropdown-item'
-										type='button'
-										onClick={this.handleClick}
-										id='A'
-									>
-										A
-									</button>
-									<button
-										className='dropdown-item'
-										type='button'
-										onClick={this.handleClick}
-										id='B'
-									>
-										B
-									</button>
-									<button
-										className='dropdown-item'
-										type='button'
-										onClick={this.handleClick}
-										id='C'
-									>
-										C
-									</button>
-									<button
-										className='dropdown-item'
-										type='button'
-										onClick={this.handleClick}
-										id='D'
-									>
-										D
-									</button>
-									<button
-										className='dropdown-item'
-										type='button'
-										onClick={this.handleClick}
-										id='F'
-									>
-										F
-									</button>
-								</div>
+									B
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
+									id='C'
+								>
+									C
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
+									id='D'
+								>
+									D
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
+									id='F'
+								>
+									F
+								</button>
 							</div>
 						</div>
-						<div className='input-field m-2'>
-							<button className='btn btn-primary lighten-1 z-depth-0'>
-								Submit
-							</button>
-						</div>
 					</div>
-				</form>
+				</div>
 			</div>
 		);
 	}
 }
 
-export default RateAssignment;
+const mapStateToProps = state => {
+	return {
+		rating: state.assignment.rating
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		changeRating: rating => dispatch(changeRating(rating))
+	};
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(RateAssignment);

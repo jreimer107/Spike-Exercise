@@ -54,10 +54,29 @@ export const switchDisplayedCourse = displayedCourse => {
 export const switchDisplayedAssignment = displayedAssignment => {
 	return (dispatch, getState) => {
 		dispatch({
-			type: 'SWITCH_DISPLAYED_COURSE',
+			type: 'SWITCH_DISPLAYED_ASSIGNMENT',
 			displayedAssignment
 		});
 	};
 };
 
-export const rateAssignment = {};
+export const changeRating = rating => {
+	return (dispatch, getstate) => {
+		dispatch({
+			type: 'CHANGE_RATING',
+			rating
+		});
+	};
+};
+
+export const rateAssignment = displayedAssignment => {
+	return (dispatch, getState, { getFirebase, getFirestore }) => {
+		const firestore = getFirestore();
+		firestore
+			.collection('assignments')
+			.doc(displayedAssignment)
+			.update({
+				//put code to update count and average
+			});
+	};
+};
