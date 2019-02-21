@@ -3,7 +3,6 @@ import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { switchDisplayedAssignment } from '../../store/actions/assignmentActions';
-import RateAssignment from './RateAssignment';
 
 class AssignmentSelect extends Component {
 	handleClick = e => {

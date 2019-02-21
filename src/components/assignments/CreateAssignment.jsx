@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createAssignment } from '../../store/actions/assignmentActions';
-import RateAssignment from './RateAssignment';
+import GradeDropdown from './GradeDropdown';
 
 class CreateAssignment extends Component {
 	handleChange = e => {
@@ -47,7 +47,7 @@ class CreateAssignment extends Component {
 						<label htmlFor='textarea1'>Description</label>
 					</div>
 					<div className='input-field'>
-						<RateAssignment />
+						<GradeDropdown />
 					</div>
 					<div className='input-field'>
 						<button className='btn btn-primary lighten-1 z-depth-0'>

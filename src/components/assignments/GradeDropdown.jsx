@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { changeRating } from '../../store/actions/assignmentActions';
 
-class RateAssignment extends Component {
+class GradeDropDown extends Component {
 	handleClick = e => {
 		this.props.changeRating(e.target.id);
 	};
@@ -92,4 +92,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(RateAssignment);
+)(GradeDropDown);
