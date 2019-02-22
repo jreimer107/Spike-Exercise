@@ -5,6 +5,7 @@ import NavBar from './components/layout/Navbar';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import DashBoard from './components/dashboard';
+import firebase from './config/fbConfig';
 
 class App extends Component {
 	render() {
@@ -24,3 +25,13 @@ class App extends Component {
 }
 
 export default App;
+
+// firebase
+// 	.firestore()
+// 	.collection('assignments')
+// 	.onSnapshot(snapshot => {
+// 		let changes = snapshot.docChanges();
+// 		changes.forEach(change => {
+// 			console.log('change', change.doc.data());
+// 		});
+// 	});

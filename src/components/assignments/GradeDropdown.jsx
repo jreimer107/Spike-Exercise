@@ -3,8 +3,15 @@ import { connect } from 'react-redux';
 import { changeRating } from '../../store/actions/assignmentActions';
 
 class GradeDropDown extends Component {
+	state = {
+		letterGrade: ''
+	};
+
 	handleClick = e => {
-		this.props.changeRating(e.target.id);
+		this.setState({
+			letterGrade: e.target.id
+		});
+		this.props.handleClick(e.target.id);
 	};
 
 	render() {
@@ -22,7 +29,7 @@ class GradeDropDown extends Component {
 								aria-haspopup='true'
 								aria-expanded='false'
 							>
-								{this.props.rating || 'Select Grade'}
+								{this.state.letterGrade || 'Select Grade'}
 							</button>
 							<div
 								className='dropdown-menu'
@@ -32,9 +39,33 @@ class GradeDropDown extends Component {
 									className='dropdown-item'
 									type='button'
 									onClick={this.handleClick}
+									id='A+'
+								>
+									A+
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
 									id='A'
 								>
 									A
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
+									id='A-'
+								>
+									A-
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
+									id='B+'
+								>
+									B+
 								</button>
 								<button
 									className='dropdown-item'
@@ -48,6 +79,22 @@ class GradeDropDown extends Component {
 									className='dropdown-item'
 									type='button'
 									onClick={this.handleClick}
+									id='B-'
+								>
+									B-
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
+									id='C+'
+								>
+									C+
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
 									id='C'
 								>
 									C
@@ -56,9 +103,33 @@ class GradeDropDown extends Component {
 									className='dropdown-item'
 									type='button'
 									onClick={this.handleClick}
+									id='C-'
+								>
+									C-
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
+									id='D+'
+								>
+									D+
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
 									id='D'
 								>
 									D
+								</button>
+								<button
+									className='dropdown-item'
+									type='button'
+									onClick={this.handleClick}
+									id='D-'
+								>
+									D-
 								</button>
 								<button
 									className='dropdown-item'
@@ -77,19 +148,4 @@ class GradeDropDown extends Component {
 	}
 }
 
-const mapStateToProps = state => {
-	return {
-		rating: state.assignment.rating
-	};
-};
-
-const mapDispatchToProps = dispatch => {
-	return {
-		changeRating: rating => dispatch(changeRating(rating))
-	};
-};
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(GradeDropDown);
+export default GradeDropDown;

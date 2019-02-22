@@ -3,6 +3,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { switchDisplayedAssignment } from '../../store/actions/assignmentActions';
+import { getFirestore } from 'redux-firestore';
 
 class AssignmentSelect extends Component {
 	handleClick = e => {
@@ -12,9 +13,20 @@ class AssignmentSelect extends Component {
 	};
 
 	render() {
+		const {
+			displayedAssignment,
+			displayedCourse,
+			assignments
+		} = this.props;
+
+		const assignmentObj = displayedAssignment
+			? assignments.find(x => x.id === displayedAssignment.id)
+			: null;
+
 		return (
 			<div className='container'>
 				<div className='dropdown'>
+					{/* Container for dropdown element. When not focused, shows selected assignment's name*/}
 					<button
 						className='btn btn-info dropdown-toggle m-2'
 						type='button'
@@ -23,34 +35,40 @@ class AssignmentSelect extends Component {
 						aria-haspopup='true'
 						aria-expanded='false'
 					>
-						{this.props.displayedAssignment.name ||
-							'Select Assignment'}
+						{assignmentObj.name || 'Select Assignment'}
 					</button>
 					<div
 						className='dropdown-menu'
 						aria-labelledby='dropdownMenu2'
 					>
-						{this.props.assignments &&
-							this.props.assignments.map(assignment => {
-								if (
-									this.props.displayedCourse.name !==
-									assignment.course
-								) {
-									return null;
-								}
-								return (
-									<button
-										className='dropdown-item'
-										type='button'
-										onClick={this.handleClick}
-										key={assignment.id}
-										id={assignment.id}
-									>
-										{assignment.name}
-									</button>
-								);
-							})}
+						{/* Dropdown elements. Displays elements that belong to selected course */}
+						{assignments &&
+							assignments
+								.filter(
+									x =>
+										x.course ===
+										this.props.displayedCourse.name
+								)
+								.map(assignment => {
+									return (
+										<button
+											className='dropdown-item'
+											type='button'
+											onClick={this.handleClick}
+											key={assignment.id}
+											id={assignment.id}
+										>
+											{assignment.name}
+										</button>
+									);
+								})}
 					</div>
+					{this.props.displayedAssignment ? (
+						<h5>
+							{assignmentObj.grade}
+							{assignmentObj.letterGrade}
+						</h5>
+					) : null}
 				</div>
 			</div>
 		);

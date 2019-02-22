@@ -5,6 +5,7 @@ import GradeDropdown from './GradeDropdown';
 
 class CreateAssignment extends Component {
 	handleChange = e => {
+		//This contains name, description, and initial grade
 		this.setState({
 			[e.target.id]: e.target.value
 		});
@@ -14,8 +15,10 @@ class CreateAssignment extends Component {
 		e.preventDefault();
 		this.props.createAssignment({
 			...this.state,
-			course: this.props.displayedCourse
+			course: this.props.displayedCourse,
+			createdAt: new Date()
 		});
+		//Reset form
 		document.getElementById('create-assignment-form').reset();
 	};
 
