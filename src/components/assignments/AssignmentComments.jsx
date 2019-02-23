@@ -5,28 +5,27 @@ import { connect } from 'react-redux';
 import CommentForm from './CommentForm';
 import { getFirestore } from 'redux-firestore';
 
-class CourseComments extends Component {
+class AssignmentComments extends Component {
 	submitComment = comment => {
 		const firestore = getFirestore();
 		firestore.collection('comments').add({
 			content: comment,
-			ownerID: this.props.displayedCourse.id
+			ownerID: this.props.displayedAssignment.id
 		});
 	};
 
 	render() {
-		const { comments, displayedCourse, auth } = this.props;
-		console.log('course changed', displayedCourse);
+		const { comments, displayedAssignment, auth } = this.props;
 		return (
 			<div className='container'>
-				<h5>Course Comments</h5>
+				<h5>Assignment Comments</h5>
 				{comments &&
 					comments
-						.filter(x => x.ownerID === displayedCourse.id)
+						.filter(x => x.ownerID === displayedAssignment.id)
 						.map(comment => {
 							return <p key={comment.id}>{comment.content}</p>;
 						})}
-				{displayedCourse && auth.uid ? (
+				{displayedAssignment && auth ? (
 					<CommentForm submitComment={this.submitComment} />
 				) : null}
 			</div>
@@ -36,7 +35,7 @@ class CourseComments extends Component {
 
 const mapStateToProps = state => {
 	return {
-		displayedCourse: state.assignment.displayedCourse,
+		displayedAssignment: state.assignment.displayedAssignment,
 		comments: state.firestore.ordered.comments,
 		auth: state.firebase.auth
 	};
@@ -45,4 +44,4 @@ const mapStateToProps = state => {
 export default compose(
 	connect(mapStateToProps),
 	firestoreConnect([{ collection: 'comments' }])
-)(CourseComments);
+)(AssignmentComments);

@@ -3,7 +3,6 @@ const initState = {
 	assignments: [],
 	displayedCourse: '',
 	displayedAssignment: '',
-	rating: ''
 };
 
 const assignmentReducer = (state = initState, action) => {

@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import Selection from './assignments/Selection';
 import CreateAssignment from './assignments/CreateAssignment';
 import CourseComments from './assignments/CourseComments';
+import AssignmentComments from './assignments/AssignmentComments';
 
 class Dashboard extends Component {
 	render() {
@@ -14,13 +15,14 @@ class Dashboard extends Component {
 				<div className='row'>
 					<div className='col s12 m6'>
 						<Selection />
-						<CreateCourse />
+						{this.props.auth.uid ? <CreateCourse /> : null}
 						{this.props.displayedCourse ? (
 							<div>
-								{this.props.displayedCourse.comments ? (
-									<CourseComments />
+								<CourseComments />
+								{this.props.auth.uid ? <CreateAssignment /> : null}
+								{this.props.displayedAssignment ? (
+									<AssignmentComments />
 								) : null}
-								<CreateAssignment />
 							</div>
 						) : null}
 					</div>

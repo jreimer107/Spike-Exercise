@@ -78,7 +78,7 @@ class Selection extends Component {
 	};
 
 	render() {
-		const { displayedAssignment, displayedCourse } = this.props;
+		const { displayedAssignment, displayedCourse, auth } = this.props;
 		return (
 			<div className='container'>
 				<form
@@ -88,7 +88,7 @@ class Selection extends Component {
 				>
 					<CourseSelect />
 					{displayedCourse ? <AssignmentSelect /> : null}
-					{displayedAssignment ? (
+					{displayedAssignment && auth.uid ? (
 						<div>
 							<GradeDropdown handleClick={this.handleClick} />
 							<div className='input-field'>
@@ -108,7 +108,8 @@ const mapStateToProps = state => {
 	return {
 		displayedCourse: state.assignment.displayedCourse,
 		displayedAssignment: state.assignment.displayedAssignment,
-		assignments: state.firestore.ordered.assignments
+		assignments: state.firestore.ordered.assignments,
+		auth: state.firebase.auth
 	};
 };
 
