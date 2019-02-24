@@ -2,16 +2,55 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
+import CourseSelect from '../assignments/CourseSelect';
+import { getFirestore } from 'redux-firestore';
 
 class UserPage extends Component {
 	state = {
 		currSemesterName: '',
-		currSemester: '',
+		currSemester: {},
 		currCourses: [],
 		currAssignments: [],
+		newSemester: '',
 	};
 
-	handleClick = e => {
+	handleSetSemester = e => {
+		this.updateState(e.target.id);
+	};
+
+	handleAddCourse = () => {
+		//push course into semester object
+		this.state.currSemester.push(this.props.displayedCourse.id);
+
+		this.updateFirestoreWithProfile();
+	};
+
+	handleChange = e => {
+		this.setState({
+			[e.target.id]: e.target.value,
+		});
+	};
+
+	handleAddSemester = e => {
+		e.preventDefault();
+		this.props.profile.semesters[this.state.newSemester] = [];
+		this.updateFirestoreWithProfile();
+		document.getElementById('create-semester-form').reset();
+	};
+
+	updateFirestoreWithProfile = () => {
+		const firestore = getFirestore();
+		firestore
+			.collection('users')
+			.doc(this.props.auth.uid)
+			.update({
+				...this.props.profile,
+			})
+			.then(this.updateState(this.state.currSemesterName)) //Refresh page so new course shows up
+			.catch(err => console.log('Error updating profile', err));
+	};
+
+	updateState = currSemesterName => {
 		//Destructure arguments
 		const {
 			profile: { semesters },
@@ -19,25 +58,27 @@ class UserPage extends Component {
 			assignments,
 		} = this.props;
 
-		//Update state info based on selected semester
-		const currSemsterName = e.target.id;
-		const currSemester = semesters[currSemsterName];
+		const currSemester = semesters[currSemesterName];
 
 		//Filter courses by those who have ids matching those in the semester's list
-		const currCourses = courses.filter(course =>
-			Object.values(currSemester).find(
-				courseID => course.id === courseID,
-			),
-		);
+		const currCourses = currSemester
+			? courses.filter(course =>
+					Object.values(currSemester).find(
+						courseID => course.id === courseID,
+					),
+			  )
+			: null;
 
 		//Filter assignments by those who belong to a course in currentCourses
-		const currAssignments = assignments.filter(assignment =>
-			currCourses.find(course => course.id === assignment.course),
-		);
+		const currAssignments = currCourses
+			? assignments.filter(assignment =>
+					currCourses.find(course => course.id === assignment.course),
+			  )
+			: null;
 
 		//Update state with updated info
 		this.setState({
-			currSemesterName: currSemsterName,
+			currSemesterName: currSemesterName,
 			currSemester: currSemester,
 			currCourses: currCourses,
 			currAssignments: currAssignments,
@@ -45,13 +86,8 @@ class UserPage extends Component {
 	};
 
 	render() {
-		const { profile, courses } = this.props;
-		const {
-			currSemesterName,
-			currSemester,
-			currCourses,
-			currAssignments,
-		} = this.state;
+		const { profile } = this.props;
+		const { currSemesterName, currCourses, currAssignments } = this.state;
 		const { semesters } = profile;
 
 		return (
@@ -84,7 +120,7 @@ class UserPage extends Component {
 									<button
 										className='dropdown-item'
 										type='button'
-										onClick={this.handleClick}
+										onClick={this.handleSetSemester}
 										key={semester}
 										id={semester}
 									>
@@ -101,21 +137,54 @@ class UserPage extends Component {
 						{/* Display list of current courses */}
 						<div className='current-courses-list'>
 							<h5>Current Courses</h5>
-							{currCourses.map(course => (
-								<p key={course.id}>{course.name}</p>
-							))}
+							{currCourses
+								? currCourses.map(course => (
+										<p key={course.id}>{course.name}</p>
+								  ))
+								: null}
 						</div>
 						{/* display list of current assignments */}
 						<div className='current-assignemtnts-list'>
 							<h5>Current Assignments</h5>
-							{currAssignments.map(assignment => (
-								<p key={assignment.id}>{assignment.name}</p>
-							))}
+							{currAssignments
+								? currAssignments.map(assignment => (
+										<p key={assignment.id}>
+											{assignment.name}
+										</p>
+								  ))
+								: null}
 						</div>
+						{/* form for adding courses to current semester */}
+						<CourseSelect />
+						<button
+							className='btn btn-info m-2'
+							onClick={this.handleAddCourse}
+						>
+							Add to Semester
+						</button>
 					</div>
 				) : null}
 				{/* form for adding additional semesters */}
-				
+				<h5>Create New Semester</h5>
+				<form
+					onSubmit={this.handleAddSemester}
+					className='white'
+					id='create-semester-form'
+				>
+					<div className='input-field'>
+						<label htmlFor='text'>Semester Name</label>
+						<input
+							type='text'
+							id='newSemester'
+							onChange={this.handleChange}
+						/>
+					</div>
+					<div className='input-field'>
+						<button className='btn btn-primary lighten-1 z-depth-0'>
+							Create
+						</button>
+					</div>
+				</form>
 			</div>
 		);
 	}
@@ -123,9 +192,11 @@ class UserPage extends Component {
 
 const mapStateToProps = state => {
 	return {
+		auth: state.firebase.auth,
 		profile: state.firebase.profile,
 		courses: state.firestore.ordered.courses,
 		assignments: state.firestore.ordered.assignments,
+		displayedCourse: state.assignment.displayedCourse,
 	};
 };
 
