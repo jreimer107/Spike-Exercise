@@ -18,8 +18,12 @@ const store = createStore(
 	compose(
 		applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
 		reduxFirestore(fbConfig),
-		reactReduxFirebase(fbConfig, { attachAuthIsReady: true })
-	)
+		reactReduxFirebase(fbConfig, {
+			useFirestoreForProfile: true,
+			userProfile: 'users',
+			attachAuthIsReady: true,
+		}),
+	),
 );
 
 store.firebaseAuthIsReady.then(() => {
@@ -28,7 +32,7 @@ store.firebaseAuthIsReady.then(() => {
 		<Provider store={store}>
 			<App />
 		</Provider>,
-		document.getElementById('root')
+		document.getElementById('root'),
 	);
 });
 

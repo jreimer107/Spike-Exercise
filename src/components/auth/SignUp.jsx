@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { signUp } from '../../store/actions/authActions';
+import { connect } from 'react-redux';
 
 class SignUp extends Component {
 	state = {
 		email: '',
 		password: '',
-		name: ''
+		firstName: '',
+		lastName: ''
 	};
 
 	handleChange = e => {
@@ -15,7 +18,7 @@ class SignUp extends Component {
 
 	handleSubmit = e => {
 		e.preventDefault(); //Prevents submitting with nothing
-		console.log(this.state);
+		this.props.signUp(this.state);
 	};
 
 	render() {
@@ -40,10 +43,18 @@ class SignUp extends Component {
 						/>
 					</div>
 					<div className='input-field'>
-						<label htmlFor='Name'>Name</label>
+						<label htmlFor='FirstName'>First Name</label>
 						<input
 							type='text'
-							id='name'
+							id='firstName'
+							onChange={this.handleChange}
+						/>
+					</div>
+					<div className='input-field'>
+						<label htmlFor='LastName'>Last Name</label>
+						<input
+							type='text'
+							id='lastName'
 							onChange={this.handleChange}
 						/>
 					</div>
@@ -58,4 +69,19 @@ class SignUp extends Component {
 	}
 }
 
-export default SignUp;
+const mapStateToProps = state => {
+	return {
+		auth: state.firebase.auth
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		signUp: newUser => dispatch(signUp(newUser))
+	};
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(SignUp);

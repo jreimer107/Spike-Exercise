@@ -9,9 +9,8 @@ class CourseSelect extends Component {
 	handleClick = e => {
 		this.props.switchDisplayedAssignment('');
 		this.props.switchDisplayedCourse(
-			this.props.courses.find(x => x.id === e.target.id)
+			this.props.courses.find(x => x.id === e.target.id),
 		);
-		console.log('new displayed course', this.props.displayedCourse);
 	};
 
 	render() {
@@ -84,7 +83,7 @@ const mapStateToProps = state => {
 		displayedCourse: state.assignment.displayedCourse,
 		displayedAssignment: state.assignment.displayedAssignment,
 		courses: state.firestore.ordered.courses,
-		assignments: state.firestore.ordered.assignments
+		assignments: state.firestore.ordered.assignments,
 	};
 };
 
@@ -94,14 +93,14 @@ const mapDispatchToProps = dispatch => {
 		switchDisplayedCourse: displayedCourse =>
 			dispatch(switchDisplayedCourse(displayedCourse)),
 		switchDisplayedAssignment: displayedAssignment =>
-			dispatch(switchDisplayedAssignment(displayedAssignment))
+			dispatch(switchDisplayedAssignment(displayedAssignment)),
 	};
 };
 
 export default compose(
 	connect(
 		mapStateToProps,
-		mapDispatchToProps
+		mapDispatchToProps,
 	),
-	firestoreConnect([{ collection: 'courses', collection: 'assignments' }])
+	firestoreConnect(['courses', 'assignments']),
 )(CourseSelect);
