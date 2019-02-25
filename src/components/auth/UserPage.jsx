@@ -20,7 +20,8 @@ class UserPage extends Component {
 		this.updateState(e.target.id);
 	};
 
-	handleAddCourse = () => {
+	handleAddCourse = e => {
+		e.preventDefault();
 		//push course into semester object
 		this.state.currSemester.push(this.props.displayedCourse.id);
 
