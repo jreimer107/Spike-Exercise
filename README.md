@@ -1,3 +1,18 @@
+LOOK HERE!
+This project will not work without the node_modules folder generated from create-
+react-app. Instructions to install that are below.
+Also requires the following packages, these do not come standard and need to be
+installed with npm install:
+firebase
+react-redux
+react-redux-firebase
+react-router-dom
+redux
+redux-firestore
+redux-thunk
+
+Instructions on how to setup and run the app:
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
