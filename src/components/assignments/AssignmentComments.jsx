@@ -10,7 +10,7 @@ class AssignmentComments extends Component {
 		const firestore = getFirestore();
 		firestore.collection('comments').add({
 			content: comment,
-			ownerID: this.props.displayedAssignment.id
+			ownerID: this.props.displayedAssignment.id,
 		});
 	};
 
@@ -25,7 +25,7 @@ class AssignmentComments extends Component {
 						.map(comment => {
 							return <p key={comment.id}>{comment.content}</p>;
 						})}
-				{displayedAssignment && auth ? (
+				{displayedAssignment && auth.uid ? (
 					<CommentForm submitComment={this.submitComment} />
 				) : null}
 			</div>
@@ -37,11 +37,11 @@ const mapStateToProps = state => {
 	return {
 		displayedAssignment: state.assignment.displayedAssignment,
 		comments: state.firestore.ordered.comments,
-		auth: state.firebase.auth
+		auth: state.firebase.auth,
 	};
 };
 
 export default compose(
 	connect(mapStateToProps),
-	firestoreConnect([{ collection: 'comments' }])
+	firestoreConnect([{ collection: 'comments' }]),
 )(AssignmentComments);
