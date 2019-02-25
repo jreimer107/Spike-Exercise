@@ -8,7 +8,7 @@ class AssignmentSelect extends Component {
 	//When assignment dropdown option is clicked, it becomes the 'displayed assignment'
 	handleClick = e => {
 		this.props.switchDisplayedAssignment(
-			this.props.assignments.find(x => x.id === e.target.id)
+			this.props.assignments.find(x => x.id === e.target.id),
 		);
 	};
 
@@ -17,7 +17,7 @@ class AssignmentSelect extends Component {
 		const {
 			displayedAssignment,
 			displayedCourse,
-			assignments
+			assignments,
 		} = this.props;
 
 		//Get reference to displayed assignment object in firebase
@@ -26,7 +26,7 @@ class AssignmentSelect extends Component {
 			: null;
 
 		return (
-			<div className='container'>
+			<div className='container inline-flex row'>
 				<div className='dropdown'>
 					{/* Container for dropdown element. When not focused, shows selected assignment's name*/}
 					<button
@@ -67,10 +67,11 @@ class AssignmentSelect extends Component {
 					</div>
 					{/* Display number and lettergrades of selected assignment */}
 					{assignmentObj ? (
-						<h5>
+						<h6>
+							{'Assignment Grade: '}
 							{assignmentObj.grade.toFixed(2)}{' '}
 							{assignmentObj.letterGrade}
-						</h5>
+						</h6>
 					) : null}
 				</div>
 			</div>
@@ -85,7 +86,7 @@ const mapStateToProps = state => {
 	return {
 		displayedCourse: state.assignment.displayedCourse,
 		displayedAssignment: state.assignment.displayedAssignment,
-		assignments: state.firestore.ordered.assignments
+		assignments: state.firestore.ordered.assignments,
 	};
 };
 
@@ -93,14 +94,14 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		switchDisplayedAssignment: displayedAssignment =>
-			dispatch(switchDisplayedAssignment(displayedAssignment))
+			dispatch(switchDisplayedAssignment(displayedAssignment)),
 	};
 };
 
 export default compose(
 	connect(
 		mapStateToProps,
-		mapDispatchToProps
+		mapDispatchToProps,
 	),
-	firestoreConnect([{ collection: 'assignments' }])
+	firestoreConnect([{ collection: 'assignments' }]),
 )(AssignmentSelect);

@@ -32,8 +32,23 @@ class CourseSelect extends Component {
 			courseGrade /= assignmentCount;
 		}
 
+		var letterGrade;
+		if (courseGrade >= 3.8) letterGrade = 'A+';
+		else if (courseGrade >= 3.5) letterGrade = 'A';
+		else if (courseGrade >= 3.3) letterGrade = 'A-';
+		else if (courseGrade >= 3.0) letterGrade = 'B+';
+		else if (courseGrade >= 2.7) letterGrade = 'B';
+		else if (courseGrade >= 2.3) letterGrade = 'B-';
+		else if (courseGrade >= 2.0) letterGrade = 'C+';
+		else if (courseGrade >= 1.7) letterGrade = 'C';
+		else if (courseGrade >= 1.3) letterGrade = 'C-';
+		else if (courseGrade >= 1.0) letterGrade = 'D+';
+		else if (courseGrade >= 0.7) letterGrade = 'D';
+		else if (courseGrade >= 0.3) letterGrade = 'D-';
+		else letterGrade = 'F';
+
 		return (
-			<div className='container'>
+			<div className='container inline-flex row'>
 				<div className='dropdown'>
 					{/* dropdown menu containing existing classes */}
 					<button
@@ -47,7 +62,9 @@ class CourseSelect extends Component {
 						{courseObj ? courseObj.name : 'Select Course'}
 					</button>
 					{courseGrade ? (
-						<h5>Course Grade: {courseGrade.toFixed(2)}</h5>
+						<h6>
+							Course Grade: {courseGrade.toFixed(2)} {letterGrade}
+						</h6>
 					) : null}
 					<div
 						className='dropdown-menu'

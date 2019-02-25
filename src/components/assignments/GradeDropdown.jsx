@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { changeRating } from '../../store/actions/assignmentActions';
 
 class GradeDropDown extends Component {
 	state = {
-		letterGrade: ''
+		letterGrade: '',
 	};
 
 	handleClick = e => {
 		this.setState({
-			letterGrade: e.target.id
+			letterGrade: e.target.id,
 		});
 		this.props.handleClick(e.target.id);
 	};
 
 	render() {
 		return (
-			<div className='container'>
+			<div className='container inline-flex row'>
 				<div className='btn-group'>
-					<div className='input-field m-2'>
-						<label htmlFor='grade'>Grade</label>
+					<div className='input-field'>
 						<div className='dropdown'>
 							<button
 								className='btn btn-info dropdown-toggle'

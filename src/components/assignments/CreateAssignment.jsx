@@ -7,7 +7,7 @@ class CreateAssignment extends Component {
 	handleChange = e => {
 		//This contains name, description, and initial grade
 		this.setState({
-			[e.target.id]: e.target.value
+			[e.target.id]: e.target.value,
 		});
 	};
 
@@ -16,7 +16,7 @@ class CreateAssignment extends Component {
 		this.props.createAssignment({
 			...this.state,
 			course: this.props.displayedCourse,
-			createdAt: new Date()
+			createdAt: new Date(),
 		});
 		//Reset form
 		document.getElementById('create-assignment-form').reset();
@@ -25,12 +25,12 @@ class CreateAssignment extends Component {
 	render() {
 		return (
 			<div className='container'>
-				<h5>Create New Assignment</h5>
 				<form
 					onSubmit={this.handleSubmit}
 					className='white'
 					id='create-assignment-form'
 				>
+					<h5>Create New Assignment</h5>
 					<div className='input-field'>
 						<label htmlFor='text'>Name</label>
 						<input
@@ -65,17 +65,17 @@ class CreateAssignment extends Component {
 
 const mapStateToProps = state => {
 	return {
-		displayedCourse: state.assignment.displayedCourse
+		displayedCourse: state.assignment.displayedCourse,
 	};
 };
 
 const mapDispatchToProps = dispatch => {
 	return {
-		createAssignment: assignment => dispatch(createAssignment(assignment))
+		createAssignment: assignment => dispatch(createAssignment(assignment)),
 	};
 };
 
 export default connect(
 	mapStateToProps,
-	mapDispatchToProps
+	mapDispatchToProps,
 )(CreateAssignment);

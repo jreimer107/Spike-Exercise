@@ -15,7 +15,7 @@ const NavBar = props => {
 		<nav className='nav-wrapper grey darken-3'>
 			<div className='container'>
 				<Link to='/' className='brand-logo'>
-					U-Ratem
+					UW-Rate 'Em
 				</Link>
 				{links}
 			</div>

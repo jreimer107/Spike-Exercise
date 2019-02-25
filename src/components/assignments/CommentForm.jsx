@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 class CommentForm extends Component {
 	state = {
-		comment: ''
+		comment: '',
 	};
 
 	handleChange = e => {
 		this.setState({
-			comment: e.target.value
+			comment: e.target.value,
 		});
 	};
 
@@ -23,6 +23,7 @@ class CommentForm extends Component {
 					className='white'
 					id='comment-form'
 				>
+					<h5>Add Comment</h5>
 					<div className='input-field'>
 						<label htmlFor='text'>Comment</label>
 						<textarea

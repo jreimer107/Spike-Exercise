@@ -4,6 +4,8 @@ import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import CourseSelect from '../assignments/CourseSelect';
 import { getFirestore } from 'redux-firestore';
+import { Redirect } from 'react-router-dom';
+import UpdateInfo from './UpdateInfo';
 
 class UserPage extends Component {
 	state = {
@@ -86,6 +88,8 @@ class UserPage extends Component {
 	};
 
 	render() {
+		if (!this.props.auth.uid) return <Redirect to='/signin' />;
+
 		const { profile } = this.props;
 		const { currSemesterName, currCourses, currAssignments } = this.state;
 		const { semesters } = profile;
@@ -97,7 +101,7 @@ class UserPage extends Component {
 				</h5>
 				{/* semester dropdown */}
 				{profile.semesters ? (
-					<div className='dropdown'>
+					<div className='dropdown inline-flex row'>
 						<button
 							className='btn btn-info dropdown-toggle m-2'
 							type='button'
@@ -155,22 +159,25 @@ class UserPage extends Component {
 								: null}
 						</div>
 						{/* form for adding courses to current semester */}
-						<CourseSelect />
-						<button
-							className='btn btn-info m-2'
-							onClick={this.handleAddCourse}
-						>
-							Add to Semester
-						</button>
+						<form className='white'>
+							<h5>Add Course to Semester</h5>
+							<CourseSelect />
+							<button
+								className='btn btn-info m-2'
+								onClick={this.handleAddCourse}
+							>
+								Add to Semester
+							</button>
+						</form>
 					</div>
 				) : null}
 				{/* form for adding additional semesters */}
-				<h5>Create New Semester</h5>
 				<form
 					onSubmit={this.handleAddSemester}
 					className='white'
 					id='create-semester-form'
 				>
+					<h5>Create New Semester</h5>
 					<div className='input-field'>
 						<label htmlFor='text'>Semester Name</label>
 						<input
@@ -185,6 +192,7 @@ class UserPage extends Component {
 						</button>
 					</div>
 				</form>
+				<UpdateInfo />
 			</div>
 		);
 	}

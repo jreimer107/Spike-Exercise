@@ -9,12 +9,12 @@ import { getFirestore } from 'redux-firestore';
 
 class Selection extends Component {
 	state = {
-		userGrade: ''
+		userGrade: '',
 	};
 
 	handleClick = letterGrade => {
 		this.setState({
-			userGrade: letterGrade
+			userGrade: letterGrade,
 		});
 	};
 
@@ -22,7 +22,7 @@ class Selection extends Component {
 		e.preventDefault();
 		const { displayedAssignment, assignments } = this.props;
 		const assignmentObj = assignments.find(
-			x => x.id === displayedAssignment.id
+			x => x.id === displayedAssignment.id,
 		);
 		const { userGrade } = this.state;
 
@@ -73,7 +73,7 @@ class Selection extends Component {
 			.update({
 				grade: newIntGrade,
 				count: newCount,
-				letterGrade: newLetterGrade
+				letterGrade: newLetterGrade,
 			});
 	};
 
@@ -86,6 +86,7 @@ class Selection extends Component {
 					id='rate-assignment-form'
 					onSubmit={this.handleSubmit}
 				>
+					<h5>Select Course/Assignment</h5>
 					<CourseSelect />
 					{displayedCourse ? <AssignmentSelect /> : null}
 					{displayedAssignment && auth.uid ? (
@@ -109,11 +110,11 @@ const mapStateToProps = state => {
 		displayedCourse: state.assignment.displayedCourse,
 		displayedAssignment: state.assignment.displayedAssignment,
 		assignments: state.firestore.ordered.assignments,
-		auth: state.firebase.auth
+		auth: state.firebase.auth,
 	};
 };
 
 export default compose(
 	connect(mapStateToProps),
-	firestoreConnect([{ collection: 'assignments' }])
+	firestoreConnect([{ collection: 'assignments' }]),
 )(Selection);

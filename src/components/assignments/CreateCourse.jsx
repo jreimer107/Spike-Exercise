@@ -5,12 +5,12 @@ import { createCourse } from '../../store/actions/assignmentActions';
 class CreateCourse extends Component {
 	state = {
 		name: '',
-		description: ''
+		description: '',
 	};
 
 	handleChange = e => {
 		this.setState({
-			[e.target.id]: e.target.value
+			[e.target.id]: e.target.value,
 		});
 	};
 
@@ -23,12 +23,12 @@ class CreateCourse extends Component {
 	render() {
 		return (
 			<div className='container'>
-				<h5>Create New Course</h5>
 				<form
 					onSubmit={this.handleSubmit}
 					className='white'
 					id='create-course-form'
 				>
+					<h5>Create New Course</h5>
 					<div className='input-field'>
 						<label htmlFor='text'>Name</label>
 						<input
@@ -60,11 +60,11 @@ class CreateCourse extends Component {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		createCourse: course => dispatch(createCourse(course))
+		createCourse: course => dispatch(createCourse(course)),
 	};
 };
 
 export default connect(
 	null,
-	mapDispatchToProps
+	mapDispatchToProps,
 )(CreateCourse);
